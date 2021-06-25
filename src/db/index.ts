@@ -1,6 +1,7 @@
 import axios from "axios"
 import { Operations } from "../enums"
 import { CreateTableParams, DropTableParams, OperationReturnType } from "../types"
+import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
   url: string
@@ -123,6 +124,64 @@ export class HarperDB implements IHarperDB {
     const data = {
       operation: Operations.DropTable,
       ...toSnakeCaseKeys(params),
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
+  }
+
+  /**
+   * Creates a new attribute
+   *
+   * **Note:** HarperDB will automatically create new attributes on insert and update if they do not already exist within the schema.
+   *
+   * @param {AttributeParams} params The parameters required to create new attribute
+   * @return {Promise} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#3bc2bde9-4ee4-4035-abc3-7caf07cde7b1
+   */
+  async createAttribute(params: AttributeParams): Promise<
+    OperationReturnType<{
+      message: string | undefined
+      // eslint-disable-next-line camelcase
+      skipped_hashes: string[] | undefined
+      // eslint-disable-next-line camelcase
+      inserted_hashes: string[] | undefined
+      error: string | undefined
+    }>
+  > {
+    const data = {
+      operation: Operations.CreateAttribute,
+      ...params,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      skipped_hashes: response.data.skipped_hashes as string[] | undefined,
+      inserted_hashes: response.data.inserted_hashes as string[] | undefined,
+      error: response.data.error as string | undefined,
+    }
+  }
+
+  /**
+   * Drops an attribute
+   *
+   * **NOTE:** Dropping an attribute will delete all associated values in that table.
+   *
+   * @param {AttributeParams} params The parameters required to drop an attribute
+   * @return {Promise} Returns response message/error from harperDB
+   *
+   * @see documentation - https://docs.harperdb.io/#fd0a0871-2504-41e7-8498-205aced33355
+   */
+  async dropAttribute(params: AttributeParams): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
+    const data = {
+      operation: Operations.DropAttribute,
+      ...params,
     }
 
     const response = await axios.post(this.url, data, { headers: this.headers })
