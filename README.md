@@ -1,13 +1,11 @@
-<img src="harper-db-logo.png" style="width:100%"></img>
+# HarperDB.js 🚀
+
+A Javascript helper library written in Typescript to work with HarperDB easily.
 
 <img src="https://img.shields.io/apm/l/atomic-design-ui.svg?style=for-the-badge" style="display:inline-block"></img>
 <img src="https://img.shields.io/david/dev/webdevavi/harperdbjs?style=for-the-badge" style="display:inline-block"></img>
 <img src="https://img.shields.io/github/v/release/webdevavi/harperdbjs?style=for-the-badge" style="display:inline-block"></img>
 <img src="https://img.shields.io/npm/dy/harperdbjs?style=for-the-badge" style="display:inline-block"></img>
-
-# HarperDB.js 🚀
-
-A Javascript helper library written in Typescript to work with HarperDB easily.
 
 ## Installation 📥
 
