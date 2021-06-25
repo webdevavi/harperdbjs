@@ -1,11 +1,11 @@
 <img src="harper-db-logo.png" style="width:100%"></img>
 
 <img src="https://img.shields.io/apm/l/atomic-design-ui.svg?style=for-the-badge" style="display:inline-block"></img>
-<img src="https://img.shields.io/david/dev/webdevavi/node-harperdb?style=for-the-badge" style="display:inline-block"></img>
-<img src="https://img.shields.io/github/v/release/webdevavi/node-harperdb?style=for-the-badge" style="display:inline-block"></img>
-<img src="https://img.shields.io/npm/dy/node-harperdb?style=for-the-badge" style="display:inline-block"></img>
+<img src="https://img.shields.io/david/dev/webdevavi/harperdbjs?style=for-the-badge" style="display:inline-block"></img>
+<img src="https://img.shields.io/github/v/release/webdevavi/harperdbjs?style=for-the-badge" style="display:inline-block"></img>
+<img src="https://img.shields.io/npm/dy/harperdbjs?style=for-the-badge" style="display:inline-block"></img>
 
-# node-harperdb 🚀
+# HarperDB.js 🚀
 
 A Javascript helper library written in Typescript to work with HarperDB easily.
 
@@ -14,13 +14,13 @@ A Javascript helper library written in Typescript to work with HarperDB easily.
 #### Install with npm
 
 ```bash
-  npm i node-harperdb
+  npm i harperdbjs
 ```
 
 #### Install with yarn
 
 ```bash
-  yarn add node-harperdb
+  yarn add harperdbjs
 ```
 
 ## Usage 🛠
@@ -34,7 +34,7 @@ See [documentation](https://harperdb.io/developers/documentation/security/authen
 - with username and password
 
 ```javascript
-import { HarperDB } from "node-harperdb"
+import { HarperDB } from "harperdbjs"
 
 const db = new HarperDB({
   url: "http://localhost:9925", // your local or cloud harperdb instance's url
@@ -46,7 +46,7 @@ const db = new HarperDB({
 - with token
 
 ```javascript
-import { HarperDB } from "node-harperdb"
+import { HarperDB } from "harperdbjs"
 
 const db = new HarperDB({
   url: "http://localhost:9925", // your local or cloud harperdb instance's url
@@ -124,7 +124,7 @@ await db.searchByConditions(
 
 ## Support 💯
 
-For support, create an [issue](https://github.com/webdevavi/node-harperdb/issues/new) or [email](mailto:savinash2608@gmail.com).
+For support, create an [issue](https://github.com/webdevavi/harperdbjs/issues/new) or [email](mailto:savinash2608@gmail.com).
 
 ## Contributing 🙏
 
