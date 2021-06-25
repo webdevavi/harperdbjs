@@ -257,4 +257,84 @@ export class HarperDB implements IHarperDB {
       skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
     }
   }
+
+  /**
+   * Updates one record
+   *
+   * **Note:** Hash value of the updated JSON record MUST be supplied on update
+   *
+   * @param {Object} record The record with hash attribute to be updated
+   * @param {InsertParams} params The parameters required to insert new record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#0876208f-a7e9-4b6a-838b-99d5e64ceec6
+   */
+  async updateOne<RecordType extends Object>(
+    record: RecordType,
+    params: InsertParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      update_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Update,
+      ...params,
+      records: [record],
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      update_hashes: response.data.update_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
+
+  /**
+   * Updates one or more records
+   *
+   * **Note:** Hash value of the updated JSON record MUST be supplied on update
+   *
+   * @param {Array<Object>} records The records with hash attributes to be updated
+   * @param {InsertParams} params The parameters required to insert new record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#0876208f-a7e9-4b6a-838b-99d5e64ceec6
+   */
+  async updateMany<RecordType extends Object>(
+    records: RecordType[],
+    params: InsertParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      update_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Update,
+      ...params,
+      records,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      update_hashes: response.data.update_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
 }

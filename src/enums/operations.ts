@@ -6,4 +6,5 @@ export enum Operations {
   CreateAttribute = "create_attribute",
   DropAttribute = "drop_attribute",
   Insert = "insert",
+  Update = "update",
 }
