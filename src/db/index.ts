@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, UpsertParams } from "../types"
+import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, UpdateParams, UpsertParams } from "../types"
 import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
@@ -264,7 +264,7 @@ export class HarperDB implements IHarperDB {
    * **Note:** Hash value of the updated JSON record MUST be supplied on update
    *
    * @param {Object} record The record with hash attribute to be updated
-   * @param {InsertParams} params The parameters required to insert new record
+   * @param {UpdateParams} params The parameters required to update new record
    * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
    *
    *
@@ -272,7 +272,7 @@ export class HarperDB implements IHarperDB {
    */
   async updateOne<RecordType extends Object>(
     record: RecordType,
-    params: InsertParams
+    params: UpdateParams
   ): Promise<
     OperationReturnType<{
       // eslint-disable-next-line camelcase
@@ -304,7 +304,7 @@ export class HarperDB implements IHarperDB {
    * **Note:** Hash value of the updated JSON record MUST be supplied on update
    *
    * @param {Array<Object>} records The records with hash attributes to be updated
-   * @param {InsertParams} params The parameters required to insert new record
+   * @param {UpdateParams} params The parameters required to update new record
    * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
    *
    *
@@ -312,7 +312,7 @@ export class HarperDB implements IHarperDB {
    */
   async updateMany<RecordType extends Object>(
     records: RecordType[],
-    params: InsertParams
+    params: UpdateParams
   ): Promise<
     OperationReturnType<{
       // eslint-disable-next-line camelcase
@@ -344,7 +344,7 @@ export class HarperDB implements IHarperDB {
    * **Note:** Hash value of the updated JSON record MUST be supplied on upsert
    *
    * @param {Object} record The record with hash attribute to be upserted
-   * @param {UpsertParams} params The parameters required to insert new record
+   * @param {UpsertParams} params The parameters required to upsert new record
    * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
    *
    *
@@ -384,7 +384,7 @@ export class HarperDB implements IHarperDB {
    * **Note:** Hash value of the updated JSON record MUST be supplied on upsert
    *
    * @param {Array<Object>} records The records with hash attributes to be upserted
-   * @param {UpsertParams} params The parameters required to insert new record
+   * @param {UpsertParams} params The parameters required to upsert new record
    * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
    *
    *
