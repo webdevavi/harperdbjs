@@ -27,26 +27,17 @@ describe("create schema", () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
   })
 
-  it("should return true if success", async () => {
+  it("should return response from harperdb", async () => {
     const promise = harperDb.createSchema(schema)
 
-    const response = { data: { message: `schema '${schema}' successfully created` } }
+    const message = `schema '${schema}' successfully created`
+
+    const response = { data: { message } }
     mockAxios.mockResponse(response)
 
     const result = await promise
 
-    expect(result).toBe(true)
-  })
-
-  it("should return false if not success", async () => {
-    const promise = harperDb.createSchema(schema)
-
-    const response = { data: { message: `schema '${schema}' not successfully created` } }
-    mockAxios.mockResponse(response)
-
-    const result = await promise
-
-    expect(result).toBe(false)
+    expect(result).toBe(message)
   })
 })
 
@@ -67,25 +58,16 @@ describe("drop schema", () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
   })
 
-  it("should return true if success", async () => {
+  it("should return response from harperdb", async () => {
     const promise = harperDb.dropSchema(schema)
 
-    const response = { data: { message: `successfully deleted schema '${schema}'` } }
+    const message = `successfully deleted schema '${schema}'`
+
+    const response = { data: { message } }
     mockAxios.mockResponse(response)
 
     const result = await promise
 
-    expect(result).toBe(true)
-  })
-
-  it("should return false if failure", async () => {
-    const promise = harperDb.dropSchema(schema)
-
-    const response = { data: { message: `not deleted schema '${schema}'` } }
-    mockAxios.mockResponse(response)
-
-    const result = await promise
-
-    expect(result).toBe(false)
+    expect(result).toBe(message)
   })
 })

@@ -57,9 +57,9 @@ export class HarperDB implements IHarperDB {
    * Creates a new schema
    *
    * @param {string} schemaName The name of the schema to create
-   * @return {boolean} Returns true if created successfully, else false
+   * @return {string} Returns response message from harperDB
    */
-  async createSchema(schemaName: string): Promise<boolean> {
+  async createSchema(schemaName: string) {
     const data = JSON.stringify({
       operation: Operations.CreateSchema,
       schema: schemaName,
@@ -67,16 +67,16 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return response.data.message === `schema '${schemaName}' successfully created`
+    return response.data.message as string
   }
 
   /**
    * Drops a schema
    *
    * @param {string} schemaName The name of the schema to drop
-   * @return {boolean} Returns true if dropped successfully, else false
+   * @return {string} Returns response message from harperDB
    */
-  async dropSchema(schemaName: string): Promise<boolean> {
+  async dropSchema(schemaName: string) {
     const data = JSON.stringify({
       operation: Operations.DropSchema,
       schema: schemaName,
@@ -84,6 +84,6 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return response.data.message === `successfully deleted schema '${schemaName}'`
+    return response.data.message as string
   }
 }
