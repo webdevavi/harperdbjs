@@ -1,1 +1,1 @@
-export type OperationReturnType<T extends Object> = { status: number } & T
+export type OperationReturnType<T extends Object = object> = T & { status: number; message?: string; error?: string }

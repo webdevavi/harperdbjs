@@ -33,21 +33,15 @@ describe("create attribute", () => {
   it("should return response message and 200 status on success", async () => {
     const promise = harperDb.createAttribute(params)
 
-    const data = {
-      message: "inserted 1 of 1 records",
-      skipped_hashes: [],
-      inserted_hashes: ["some-hash"],
-    }
+    const message = `attribute '${schema}.${table}.${attribute}' successfully created.`
 
-    const response = { data, status: 200 }
+    const response = { data: { message }, status: 200 }
     mockAxios.mockResponse(response)
 
     const result = await promise
 
     expect(result.status).toBe(200)
-    expect(result.message).toBe(data.message)
-    expect(result.skipped_hashes).toBe(data.skipped_hashes)
-    expect(result.inserted_hashes).toBe(data.inserted_hashes)
+    expect(result.message).toBe(message)
   })
 
   it("should return response error and status other than 200 on failure", async () => {
