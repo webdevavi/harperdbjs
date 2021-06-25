@@ -1,10 +1,8 @@
-require("dotenv").config()
-
 import { HarperDB } from "../../src"
 
-const url = process.env["DB_URL"] ?? ""
-const username = process.env["DB_USERNAME"] ?? ""
-const password = process.env["DB_PASSWORD"] ?? ""
+const url = "/my/url"
+const username = "username"
+const password = "password"
 
 describe("HarperDB class", () => {
   const harperDb = new HarperDB({
