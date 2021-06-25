@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, SearchParams, SearchResponse, UpdateParams, UpsertParams } from "../types"
+import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, SearchByConditionParams, SearchCondition, SearchParams, SearchResponse, UpdateParams, UpsertParams } from "../types"
 import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
@@ -542,6 +542,32 @@ export class HarperDB implements IHarperDB {
       ...toSnakeCaseKeys(params),
       search_attribute: searchAttribute,
       search_value: searchValue,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      records: response.data ?? [],
+    }
+  }
+
+  /**
+   * Searches for records with the provided conditions
+   *
+   * @param {SearchCondition[]} searchConditions the array of conditions objects to filter by. Must include one or more object in the array.
+   * @param {SearchByConditionParams} params The parameters required to search records
+   * @return {Promise<OperationReturnType<SearchResponse>>} Returns array of found records
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#35367306-677c-40f3-bda0-172113a93a05
+   */
+  async searchByConditions(searchConditions: SearchCondition[], params: SearchByConditionParams): Promise<OperationReturnType<SearchResponse>> {
+    const data = {
+      operation: Operations.SearchByConditions,
+      get_attributes: ["*"],
+      ...toSnakeCaseKeys(params),
+      conditions: searchConditions.map((condition) => toSnakeCaseKeys(condition)),
     }
 
     const response = await axios.post(this.url, data, { headers: this.headers })

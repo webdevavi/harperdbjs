@@ -11,4 +11,5 @@ export enum Operations {
   Delete = "delete",
   SearchByHash = "search_by_hash",
   SearchByValue = "search_by_value",
+  SearchByConditions = "search_by_conditions",
 }
