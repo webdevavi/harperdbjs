@@ -30,7 +30,7 @@ describe("create schema", () => {
   it("should return true if success", async () => {
     const promise = harperDb.createSchema(schema)
 
-    const response = { data: { message: `Schema '${schema}' created successfully` } }
+    const response = { data: { message: `schema '${schema}' successfully created` } }
     mockAxios.mockResponse(response)
 
     const result = await promise
@@ -41,7 +41,7 @@ describe("create schema", () => {
   it("should return false if not success", async () => {
     const promise = harperDb.createSchema(schema)
 
-    const response = { data: { message: `Schema '${schema}' not created successfully` } }
+    const response = { data: { message: `schema '${schema}' not successfully created` } }
     mockAxios.mockResponse(response)
 
     const result = await promise

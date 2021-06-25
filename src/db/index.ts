@@ -67,6 +67,6 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return response.data.message === `Schema '${schemaName}' created successfully`
+    return response.data.message === `schema '${schemaName}' successfully created`
   }
 }
