@@ -2,33 +2,49 @@ import axios from "axios"
 import { Operations } from "../enums"
 import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, SearchByConditionParams, SearchCondition, SearchParams, SearchResponse, UpdateParams, UpsertParams } from "../types"
 import { AttributeParams } from "../types/attributeParams"
-import { toSnakeCaseKeys } from "../utils"
+import { stripUndefined, toSnakeCaseKeys } from "../utils"
+
 export interface HarperDBAuth {
   url: string
-  username: string
-  password: string
-}
-
-export interface IHarperDB {
-  get auth(): HarperDBAuth
+  username?: string
+  password?: string
+  token?: string
 }
 
 /**
  * The main class to connect with HarperDB
  */
-export class HarperDB implements IHarperDB {
+export class HarperDB {
   private url: string
-  private username: string
-  private password: string
+  private username?: string | undefined
+  private password?: string | undefined
+  private token?: string | undefined
 
   /**
    *
    * @param {HarperDBAuth} options The authentication params to connect with HarperDB
    */
-  constructor({ url, username, password }: HarperDBAuth) {
+  constructor({ url, username, password, token }: HarperDBAuth) {
+    if (!token && !username && !password) {
+      throw new Error("Either a set of username and password or a token is required to authenticate with HarperDB.")
+    }
+
+    if ((username && !password) || (!username && password)) {
+      throw new Error("Both username and password are required to authenticate with HarperDB.")
+    }
+
     this.url = url
     this.username = username
     this.password = password
+    this.token = token
+  }
+
+  /**
+   * Generates the auth token with username and password
+   * or returns the token if provided
+   */
+  get generatedToken(): string {
+    return this.token ?? Buffer.from(this.username + ":" + this.password).toString("base64")
   }
 
   /**
@@ -37,7 +53,7 @@ export class HarperDB implements IHarperDB {
    */
   private get headers() {
     return {
-      Authorization: `Basic ${Buffer.from(this.username + ":" + this.password).toString("base64")}`,
+      Authorization: `Basic ${this.generatedToken}`,
       "Content-Type": "application/json",
     }
   }
@@ -45,14 +61,15 @@ export class HarperDB implements IHarperDB {
   /**
    * The current auth options being used to connect with HarperDB
    *
-   * @return {HarperDBAuth} Auth options - url, username & password
+   * @return {Partial<HarperDBAuth>} Auth options - url, username & password or token
    */
-  get auth(): HarperDBAuth {
-    return {
+  get auth(): Partial<HarperDBAuth> {
+    return stripUndefined({
       url: this.url,
       username: this.username,
       password: this.password,
-    }
+      token: this.token,
+    } as HarperDBAuth)
   }
 
   /**
