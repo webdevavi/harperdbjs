@@ -12,9 +12,9 @@ const schema = "dev"
 const table = "test"
 const hashAttribute = "id"
 
-const params = { schema, table, hashAttribute }
-
 describe("create table", () => {
+  const params = { schema, table, hashAttribute }
+
   it("should call axios with correct data", () => {
     const data = JSON.stringify({
       operation: "create_table",
@@ -51,6 +51,54 @@ describe("create table", () => {
     const promise = harperDb.createTable(params)
 
     const error = `table '${table}' already exists`
+
+    const response = { data: { error }, status: 500 }
+    mockAxios.mockResponse(response)
+
+    const result = await promise
+
+    expect(result.status).not.toBe(200)
+    expect(result.error).toBe(error)
+  })
+})
+
+describe("drop table", () => {
+  const params = { schema, table }
+
+  it("should call axios with correct data", () => {
+    const data = JSON.stringify({
+      operation: "drop_table",
+      ...params,
+    })
+
+    const headers = {
+      Authorization: `Basic ${Buffer.from(username + ":" + password).toString("base64")}`,
+      "Content-Type": "application/json",
+    }
+
+    harperDb.dropTable(params)
+
+    expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
+  })
+
+  it("should return response message and 200 status on success", async () => {
+    const promise = harperDb.dropTable(params)
+
+    const message = `successfully deleted table '${schema}.${table}'`
+
+    const response = { data: { message }, status: 200 }
+    mockAxios.mockResponse(response)
+
+    const result = await promise
+
+    expect(result.status).toBe(200)
+    expect(result.message).toBe(message)
+  })
+
+  it("should return response error and status other than 200 on failure", async () => {
+    const promise = harperDb.dropTable(params)
+
+    const error = `table '${schema}.${table}' does not exist`
 
     const response = { data: { error }, status: 500 }
     mockAxios.mockResponse(response)

@@ -11,3 +11,14 @@ export type CreateTableParams = {
   /** hash for the table */
   hashAttribute: string
 }
+
+/**
+ * Required parameters to drop a table
+ */
+export type DropTableParams = {
+  /** name of the schema where you want your table to live */
+  schema: string
+
+  /** name of the table you are creating */
+  table: string
+}

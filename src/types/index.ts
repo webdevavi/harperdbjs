@@ -1,1 +1,2 @@
-export * from "./createTableParams"
+export * from "./tableParams"
+export * from "./OperationReturnType"
