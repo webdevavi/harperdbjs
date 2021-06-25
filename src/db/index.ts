@@ -1,5 +1,8 @@
 import axios from "axios"
 import { Operations } from "../enums/operations"
+import { CreateTableParams } from "../types"
+import { OperationReturnType } from "../types/OperationReturnType"
+import { toSnakeCaseKeys } from "../utils"
 
 export interface HarperDBAuth {
   url: string
@@ -89,5 +92,24 @@ export class HarperDB implements IHarperDB {
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
     return { message: response.data.message as string | undefined, error: response.data.error as string | undefined }
+  }
+
+  /**
+   * Creates a new table
+   *
+   * @param {CreateTableParams} params The parameters required to create new table
+   * @return {Promise} Returns response message/error from harperDB
+   *
+   * See documentation - https://docs.harperdb.io/#e567871c-6c1c-44b5-9e68-9c89ea015502
+   */
+  async createTable(params: CreateTableParams): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
+    const data = JSON.stringify({
+      operation: Operations.CreateTable,
+      ...toSnakeCaseKeys(params),
+    })
+
+    const response = await axios.post(this.url, { data }, { headers: this.headers })
+
+    return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
 }
