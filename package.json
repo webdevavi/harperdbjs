@@ -1,13 +1,13 @@
 {
   "name": "harperdbjs",
+  "description": "A Javascript helper library written in Typescript to work with HarperDB easily.",
   "version": "0.0.1",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "files": [
     "/dist"
   ],
-  "repository": "https://www.github.com/webdevavi/harperdbjs",
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -45,5 +45,20 @@
     "lodash.isundefined": "^3.0.1",
     "lodash.omitby": "^4.6.0",
     "snake-case": "^3.0.4"
-  }
+  },
+  "homepage": "https://www.github.com/webdevavi/harperdbjs#readme",
+  "repository": "https://www.github.com/webdevavi/harperdbjs",
+  "bugs": {
+    "url": "https://github.com/webdevavi/harperdbjs/issues",
+    "email": "savinash2608@gmail.com"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/webdevavi"
+  },
+  "keywords": [
+    "harperdbjs",
+    "harperdb",
+    "harperdb node client"
+  ]
 }
