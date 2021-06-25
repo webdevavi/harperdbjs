@@ -57,9 +57,11 @@ export class HarperDB implements IHarperDB {
    * Creates a new schema
    *
    * @param {string} schemaName The name of the schema to create
-   * @return {string} Returns response message from harperDB
+   * @return {Promise} Returns response message/error from harperDB
+   *
+   * See documentation - https://docs.harperdb.io/#870ee548-972e-43cf-80e1-452ca7623392
    */
-  async createSchema(schemaName: string) {
+  async createSchema(schemaName: string): Promise<{ message: string | undefined; error: string | undefined }> {
     const data = JSON.stringify({
       operation: Operations.CreateSchema,
       schema: schemaName,
@@ -67,16 +69,18 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return response.data.message as string
+    return { message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
 
   /**
    * Drops a schema
    *
    * @param {string} schemaName The name of the schema to drop
-   * @return {string} Returns response message from harperDB
+   * @return {Promise} Returns response message/error from harperDB
+   *
+   * See documentation https://docs.harperdb.io/#c35ebd0e-db60-43a9-ba26-b4973de8fac8
    */
-  async dropSchema(schemaName: string) {
+  async dropSchema(schemaName: string): Promise<{ message: string | undefined; error: string | undefined }> {
     const data = JSON.stringify({
       operation: Operations.DropSchema,
       schema: schemaName,
@@ -84,6 +88,6 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return response.data.message as string
+    return { message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
 }

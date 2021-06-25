@@ -27,7 +27,7 @@ describe("create schema", () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
   })
 
-  it("should return response from harperdb", async () => {
+  it("should return message from harperdb on success", async () => {
     const promise = harperDb.createSchema(schema)
 
     const message = `schema '${schema}' successfully created`
@@ -37,7 +37,20 @@ describe("create schema", () => {
 
     const result = await promise
 
-    expect(result).toBe(message)
+    expect(result.message).toBe(message)
+  })
+
+  it("should return response error from harperdb on failure", async () => {
+    const promise = harperDb.createSchema(schema)
+
+    const error = `schema '${schema}' already exists`
+
+    const response = { data: { error } }
+    mockAxios.mockResponse(response)
+
+    const result = await promise
+
+    expect(result.error).toBe(error)
   })
 })
 
@@ -58,7 +71,7 @@ describe("drop schema", () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
   })
 
-  it("should return response from harperdb", async () => {
+  it("should return response message from harperdb on success", async () => {
     const promise = harperDb.dropSchema(schema)
 
     const message = `successfully deleted schema '${schema}'`
@@ -68,6 +81,19 @@ describe("drop schema", () => {
 
     const result = await promise
 
-    expect(result).toBe(message)
+    expect(result.message).toBe(message)
+  })
+
+  it("should return response error from harperdb on failure", async () => {
+    const promise = harperDb.dropSchema(schema)
+
+    const error = `schema '${schema}' doesn't exist`
+
+    const response = { data: { error } }
+    mockAxios.mockResponse(response)
+
+    const result = await promise
+
+    expect(result.error).toBe(error)
   })
 })
