@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DropTableParams, InsertParams, OperationReturnType, UpsertParams } from "../types"
+import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, UpsertParams } from "../types"
 import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
@@ -414,6 +414,86 @@ export class HarperDB implements IHarperDB {
       message: response.data.message as string | undefined,
       error: response.data.error as string | undefined,
       upserted_hashes: response.data.upserted_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
+
+  /**
+   * Deletes one record
+   *
+   * **Note:** Hash value of the deleted JSON record MUST be supplied on delete
+   *
+   * @param {string|number} hashValue The hash value of the record to be deleted
+   * @param {DeleteParams} params The parameters required to delete a record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#19936afa-df5c-46ae-abf4-0a0c4fc78e5e
+   */
+  async deleteOne(
+    hashValue: string | number,
+    params: DeleteParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      deleted_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Delete,
+      ...params,
+      hash_values: [hashValue],
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      deleted_hashes: response.data.deleted_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
+
+  /**
+   * Deletes one or more records
+   *
+   * **Note:** Hash value of the deleted JSON records MUST be supplied on delete
+   *
+   * @param {Array<string|number>} hashValues The hash values of the records to be deleted
+   * @param {DeleteParams} params The parameters required to delete a record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#19936afa-df5c-46ae-abf4-0a0c4fc78e5e
+   */
+  async deleteMany(
+    hashValues: (string | number)[],
+    params: DeleteParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      deleted_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Delete,
+      ...params,
+      hash_values: hashValues,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      deleted_hashes: response.data.deleted_hashes as (string | number)[] | undefined,
       skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
     }
   }

@@ -8,4 +8,5 @@ export enum Operations {
   Insert = "insert",
   Update = "update",
   Upsert = "upsert",
+  Delete = "delete",
 }
