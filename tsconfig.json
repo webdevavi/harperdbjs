@@ -2,15 +2,14 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es5",
+    "lib": ["es2017", "es7", "es6"],
     "module": "commonjs",
     "allowJs": true,
     "declaration": true,
+    "declarationDir": "./dist",
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "./",
-    "removeComments": true,
-    "noEmit": true,
     "importHelpers": true,
     "downlevelIteration": true,
     "isolatedModules": false,
@@ -36,6 +35,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["./src", "__mocks__"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

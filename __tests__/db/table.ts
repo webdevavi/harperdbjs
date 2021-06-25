@@ -16,12 +16,12 @@ describe("create table", () => {
   const params = { schema, table, hashAttribute }
 
   it("should call axios with correct data", () => {
-    const data = JSON.stringify({
+    const data = {
       operation: "create_table",
       schema,
       table,
       hash_attribute: hashAttribute,
-    })
+    }
 
     const headers = {
       Authorization: `Basic ${Buffer.from(username + ":" + password).toString("base64")}`,
@@ -30,7 +30,7 @@ describe("create table", () => {
 
     harperDb.createTable(params)
 
-    expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
+    expect(mockAxios.post).toHaveBeenCalledWith(url, data, { headers })
   })
 
   it("should return response message and 200 status on success", async () => {
@@ -66,10 +66,10 @@ describe("drop table", () => {
   const params = { schema, table }
 
   it("should call axios with correct data", () => {
-    const data = JSON.stringify({
+    const data = {
       operation: "drop_table",
       ...params,
-    })
+    }
 
     const headers = {
       Authorization: `Basic ${Buffer.from(username + ":" + password).toString("base64")}`,
@@ -78,7 +78,7 @@ describe("drop table", () => {
 
     harperDb.dropTable(params)
 
-    expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
+    expect(mockAxios.post).toHaveBeenCalledWith(url, data, { headers })
   })
 
   it("should return response message and 200 status on success", async () => {

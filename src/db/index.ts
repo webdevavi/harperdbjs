@@ -63,12 +63,12 @@ export class HarperDB implements IHarperDB {
    * See documentation - https://docs.harperdb.io/#870ee548-972e-43cf-80e1-452ca7623392
    */
   async createSchema(schemaName: string): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
-    const data = JSON.stringify({
+    const data = {
       operation: Operations.CreateSchema,
       schema: schemaName,
-    })
+    }
 
-    const response = await axios.post(this.url, { data }, { headers: this.headers })
+    const response = await axios.post(this.url, data, { headers: this.headers })
 
     return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
@@ -82,12 +82,12 @@ export class HarperDB implements IHarperDB {
    * See documentation https://docs.harperdb.io/#c35ebd0e-db60-43a9-ba26-b4973de8fac8
    */
   async dropSchema(schemaName: string): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
-    const data = JSON.stringify({
+    const data = {
       operation: Operations.DropSchema,
       schema: schemaName,
-    })
+    }
 
-    const response = await axios.post(this.url, { data }, { headers: this.headers })
+    const response = await axios.post(this.url, data, { headers: this.headers })
 
     return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
@@ -101,12 +101,12 @@ export class HarperDB implements IHarperDB {
    * See documentation - https://docs.harperdb.io/#e567871c-6c1c-44b5-9e68-9c89ea015502
    */
   async createTable(params: CreateTableParams): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
-    const data = JSON.stringify({
+    const data = {
       operation: Operations.CreateTable,
       ...toSnakeCaseKeys(params),
-    })
+    }
 
-    const response = await axios.post(this.url, { data }, { headers: this.headers })
+    const response = await axios.post(this.url, data, { headers: this.headers })
 
     return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
@@ -120,12 +120,12 @@ export class HarperDB implements IHarperDB {
    * See documentation - https://docs.harperdb.io/#68ff3823-9757-4775-9516-d94f9aa69a32
    */
   async dropTable(params: DropTableParams): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
-    const data = JSON.stringify({
+    const data = {
       operation: Operations.DropTable,
       ...toSnakeCaseKeys(params),
-    })
+    }
 
-    const response = await axios.post(this.url, { data }, { headers: this.headers })
+    const response = await axios.post(this.url, data, { headers: this.headers })
 
     return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }

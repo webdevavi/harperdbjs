@@ -12,10 +12,10 @@ const schema = "dev"
 
 describe("create schema", () => {
   it("should call axios with correct data", () => {
-    const data = JSON.stringify({
+    const data = {
       operation: "create_schema",
       schema,
-    })
+    }
 
     const headers = {
       Authorization: `Basic ${Buffer.from(username + ":" + password).toString("base64")}`,
@@ -24,7 +24,7 @@ describe("create schema", () => {
 
     harperDb.createSchema(schema)
 
-    expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
+    expect(mockAxios.post).toHaveBeenCalledWith(url, data, { headers })
   })
 
   it("should return response message and 200 status on success", async () => {
@@ -58,10 +58,10 @@ describe("create schema", () => {
 
 describe("drop schema", () => {
   it("should call axios with correct data", () => {
-    const data = JSON.stringify({
+    const data = {
       operation: "drop_schema",
       schema,
-    })
+    }
 
     const headers = {
       Authorization: `Basic ${Buffer.from(username + ":" + password).toString("base64")}`,
@@ -70,7 +70,7 @@ describe("drop schema", () => {
 
     harperDb.dropSchema(schema)
 
-    expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
+    expect(mockAxios.post).toHaveBeenCalledWith(url, data, { headers })
   })
 
   it("should return response message and 200 status on success", async () => {
