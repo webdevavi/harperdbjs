@@ -1,1 +1,1 @@
-export const returnTrue = () => true
+export * from "./db"

@@ -1,0 +1,15 @@
+export enum Operations {
+  CreateSchema = "create_schema",
+  DropSchema = "drop_schema",
+  CreateTable = "create_table",
+  DropTable = "drop_table",
+  CreateAttribute = "create_attribute",
+  DropAttribute = "drop_attribute",
+  Insert = "insert",
+  Update = "update",
+  Upsert = "upsert",
+  Delete = "delete",
+  SearchByHash = "search_by_hash",
+  SearchByValue = "search_by_value",
+  SearchByConditions = "search_by_conditions",
+}

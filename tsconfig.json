@@ -2,16 +2,14 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es5",
+    "lib": ["es2017", "es7", "es6"],
     "module": "commonjs",
-    "lib": [],
-    "allowJs": false,
+    "allowJs": true,
     "declaration": true,
+    "declarationDir": "./dist",
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "./src",
-    "removeComments": true,
-    "noEmit": true,
     "importHelpers": true,
     "downlevelIteration": true,
     "isolatedModules": false,
@@ -31,13 +29,12 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "moduleResolution": "node",
-    "baseUrl": "./src",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["./src"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
