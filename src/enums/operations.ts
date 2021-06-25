@@ -7,4 +7,5 @@ export enum Operations {
   DropAttribute = "drop_attribute",
   Insert = "insert",
   Update = "update",
+  Upsert = "upsert",
 }

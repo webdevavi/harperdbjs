@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DropTableParams, InsertParams, OperationReturnType } from "../types"
+import { CreateTableParams, DropTableParams, InsertParams, OperationReturnType, UpsertParams } from "../types"
 import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
@@ -334,6 +334,86 @@ export class HarperDB implements IHarperDB {
       message: response.data.message as string | undefined,
       error: response.data.error as string | undefined,
       update_hashes: response.data.update_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
+
+  /**
+   * Upserts one record
+   *
+   * **Note:** Hash value of the updated JSON record MUST be supplied on upsert
+   *
+   * @param {Object} record The record with hash attribute to be upserted
+   * @param {UpsertParams} params The parameters required to insert new record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#0876208f-a7e9-4b6a-838b-99d5e64ceec6
+   */
+  async upsertOne<RecordType extends Object>(
+    record: RecordType,
+    params: UpsertParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      upserted_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Upsert,
+      ...params,
+      records: [record],
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      upserted_hashes: response.data.upserted_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
+
+  /**
+   * Upserts one or more records
+   *
+   * **Note:** Hash value of the updated JSON record MUST be supplied on upsert
+   *
+   * @param {Array<Object>} records The records with hash attributes to be upserted
+   * @param {UpsertParams} params The parameters required to insert new record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#0876208f-a7e9-4b6a-838b-99d5e64ceec6
+   */
+  async upsertMany<RecordType extends Object>(
+    records: RecordType[],
+    params: UpsertParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      upserted_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Upsert,
+      ...params,
+      records,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      upserted_hashes: response.data.upserted_hashes as (string | number)[] | undefined,
       skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
     }
   }
