@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, UpdateParams, UpsertParams } from "../types"
+import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, SearchParams, SearchResponse, UpdateParams, UpsertParams } from "../types"
 import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
@@ -495,6 +495,32 @@ export class HarperDB implements IHarperDB {
       error: response.data.error as string | undefined,
       deleted_hashes: response.data.deleted_hashes as (string | number)[] | undefined,
       skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
+
+  /**
+   * Searches for records with the provided hash values
+   *
+   * @param {Array<string|number>} hashValues The hash values of the records to be searched
+   * @param {SearchParams} params The parameters required to search records
+   * @return {Promise<OperationReturnType<SearchResponse>>} Returns array of found records
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#286d4ebc-d85d-45e4-9bf4-8e33d907ed3d
+   */
+  async searchByHash(hashValues: (string | number)[], params: SearchParams): Promise<OperationReturnType<SearchResponse>> {
+    const data = {
+      operation: Operations.SearchByHash,
+      get_attributes: ["*"],
+      ...toSnakeCaseKeys(params),
+      hash_values: hashValues,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      records: response.data ?? [],
     }
   }
 }

@@ -9,4 +9,5 @@ export enum Operations {
   Update = "update",
   Upsert = "upsert",
   Delete = "delete",
+  SearchByHash = "search_by_hash",
 }
