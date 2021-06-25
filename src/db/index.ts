@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DropTableParams, OperationReturnType } from "../types"
+import { CreateTableParams, DropTableParams, InsertParams, OperationReturnType } from "../types"
 import { AttributeParams } from "../types/attributeParams"
 import { toSnakeCaseKeys } from "../utils"
 export interface HarperDBAuth {
@@ -176,5 +176,45 @@ export class HarperDB implements IHarperDB {
     const response = await axios.post(this.url, data, { headers: this.headers })
 
     return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
+  }
+
+  /**
+   * Inserts one record
+   *
+   * **Note:** Hash value of the inserted JSON record MUST be supplied on insert
+   *
+   * @param {Object} record The record to be inserted
+   * @param {InsertParams} params The parameters required to insert new record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#7edea7e9-f685-4ecf-83d9-5e38d3243c68
+   */
+  async insert<RecordType extends Object>(
+    record: RecordType,
+    params: InsertParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      inserted_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Insert,
+      ...params,
+      records: [record],
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      inserted_hashes: response.data.inserted_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
   }
 }

@@ -5,4 +5,5 @@ export enum Operations {
   DropTable = "drop_table",
   CreateAttribute = "create_attribute",
   DropAttribute = "drop_attribute",
+  Insert = "insert",
 }
