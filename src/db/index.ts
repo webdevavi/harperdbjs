@@ -217,4 +217,44 @@ export class HarperDB implements IHarperDB {
       skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
     }
   }
+
+  /**
+   * Inserts one or more records
+   *
+   * **Note:** Hash value of the inserted JSON record MUST be supplied on insert
+   *
+   * @param {Array<Object>} records The records to be inserted
+   * @param {InsertParams} params The parameters required to insert new record
+   * @return {Promise<OperationReturnType>} Returns response message/error from harperDB
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#7edea7e9-f685-4ecf-83d9-5e38d3243c68
+   */
+  async insertMany<RecordType extends Object>(
+    records: RecordType[],
+    params: InsertParams
+  ): Promise<
+    OperationReturnType<{
+      // eslint-disable-next-line camelcase
+      inserted_hashes?: (string | number)[]
+      // eslint-disable-next-line camelcase
+      skipped_hashes?: (string | number)[]
+    }>
+  > {
+    const data = {
+      operation: Operations.Insert,
+      ...params,
+      records,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      message: response.data.message as string | undefined,
+      error: response.data.error as string | undefined,
+      inserted_hashes: response.data.inserted_hashes as (string | number)[] | undefined,
+      skipped_hashes: response.data.skipped_hashes as (string | number)[] | undefined,
+    }
+  }
 }
