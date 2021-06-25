@@ -1,3 +1,6 @@
+import axios from "axios"
+import { Operations } from "../enums/operations"
+
 export interface HarperDBAuth {
   url: string
   username: string
@@ -27,6 +30,17 @@ export class HarperDB implements IHarperDB {
   }
 
   /**
+   *
+   * @return {any} Header with Authorization
+   */
+  private get headers() {
+    return {
+      Authorization: `Basic ${Buffer.from(this.username + ":" + this.password).toString("base64")}`,
+      "Content-Type": "application/json",
+    }
+  }
+
+  /**
    * The current auth options being used to connect with HarperDB
    *
    * @return {HarperDBAuth} Auth options - url, username & password
@@ -37,5 +51,22 @@ export class HarperDB implements IHarperDB {
       username: this.username,
       password: this.password,
     }
+  }
+
+  /**
+   * Creates a new schema
+   *
+   * @param {string} schemaName The name of the schema to create
+   * @return {boolean} Returns true if created successfully, else false
+   */
+  async createSchema(schemaName: string): Promise<boolean> {
+    const data = JSON.stringify({
+      operation: Operations.CreateSchema,
+      schema: schemaName,
+    })
+
+    const response = await axios.post(this.url, { data }, { headers: this.headers })
+
+    return response.data.message === `Schema '${schemaName}' created successfully`
   }
 }
