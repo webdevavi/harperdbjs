@@ -27,29 +27,31 @@ describe("create schema", () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
   })
 
-  it("should return message from harperdb on success", async () => {
+  it("should return response message and 200 status on success", async () => {
     const promise = harperDb.createSchema(schema)
 
     const message = `schema '${schema}' successfully created`
 
-    const response = { data: { message } }
+    const response = { data: { message }, status: 200 }
     mockAxios.mockResponse(response)
 
     const result = await promise
 
+    expect(result.status).toBe(200)
     expect(result.message).toBe(message)
   })
 
-  it("should return response error from harperdb on failure", async () => {
+  it("should return response error and status other than 200 on failure", async () => {
     const promise = harperDb.createSchema(schema)
 
     const error = `schema '${schema}' already exists`
 
-    const response = { data: { error } }
+    const response = { data: { error }, status: 500 }
     mockAxios.mockResponse(response)
 
     const result = await promise
 
+    expect(result.status).not.toBe(200)
     expect(result.error).toBe(error)
   })
 })
@@ -71,7 +73,7 @@ describe("drop schema", () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, { data }, { headers })
   })
 
-  it("should return response message from harperdb on success", async () => {
+  it("should return response message and 200 status on success", async () => {
     const promise = harperDb.dropSchema(schema)
 
     const message = `successfully deleted schema '${schema}'`
@@ -81,19 +83,21 @@ describe("drop schema", () => {
 
     const result = await promise
 
+    expect(result.status).toBe(200)
     expect(result.message).toBe(message)
   })
 
-  it("should return response error from harperdb on failure", async () => {
+  it("should return response error and status other than 200 on failure", async () => {
     const promise = harperDb.dropSchema(schema)
 
     const error = `schema '${schema}' doesn't exist`
 
-    const response = { data: { error } }
+    const response = { data: { error }, status: 500 }
     mockAxios.mockResponse(response)
 
     const result = await promise
 
+    expect(result.status).not.toBe(200)
     expect(result.error).toBe(error)
   })
 })

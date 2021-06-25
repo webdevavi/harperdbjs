@@ -1,9 +1,7 @@
 import axios from "axios"
-import { Operations } from "../enums/operations"
-import { CreateTableParams, DropTableParams } from "../types"
-import { OperationReturnType } from "../types/OperationReturnType"
+import { Operations } from "../enums"
+import { CreateTableParams, DropTableParams, OperationReturnType } from "../types"
 import { toSnakeCaseKeys } from "../utils"
-
 export interface HarperDBAuth {
   url: string
   username: string
@@ -64,7 +62,7 @@ export class HarperDB implements IHarperDB {
    *
    * See documentation - https://docs.harperdb.io/#870ee548-972e-43cf-80e1-452ca7623392
    */
-  async createSchema(schemaName: string): Promise<{ message: string | undefined; error: string | undefined }> {
+  async createSchema(schemaName: string): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
     const data = JSON.stringify({
       operation: Operations.CreateSchema,
       schema: schemaName,
@@ -72,7 +70,7 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return { message: response.data.message as string | undefined, error: response.data.error as string | undefined }
+    return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
 
   /**
@@ -83,7 +81,7 @@ export class HarperDB implements IHarperDB {
    *
    * See documentation https://docs.harperdb.io/#c35ebd0e-db60-43a9-ba26-b4973de8fac8
    */
-  async dropSchema(schemaName: string): Promise<{ message: string | undefined; error: string | undefined }> {
+  async dropSchema(schemaName: string): Promise<OperationReturnType<{ message: string | undefined; error: string | undefined }>> {
     const data = JSON.stringify({
       operation: Operations.DropSchema,
       schema: schemaName,
@@ -91,7 +89,7 @@ export class HarperDB implements IHarperDB {
 
     const response = await axios.post(this.url, { data }, { headers: this.headers })
 
-    return { message: response.data.message as string | undefined, error: response.data.error as string | undefined }
+    return { status: response.status, message: response.data.message as string | undefined, error: response.data.error as string | undefined }
   }
 
   /**
