@@ -69,4 +69,21 @@ export class HarperDB implements IHarperDB {
 
     return response.data.message === `schema '${schemaName}' successfully created`
   }
+
+  /**
+   * Drops a schema
+   *
+   * @param {string} schemaName The name of the schema to drop
+   * @return {boolean} Returns true if dropped successfully, else false
+   */
+  async dropSchema(schemaName: string): Promise<boolean> {
+    const data = JSON.stringify({
+      operation: Operations.DropSchema,
+      schema: schemaName,
+    })
+
+    const response = await axios.post(this.url, { data }, { headers: this.headers })
+
+    return response.data.message === `successfully deleted schema '${schemaName}'`
+  }
 }
