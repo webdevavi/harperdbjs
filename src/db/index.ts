@@ -523,4 +523,32 @@ export class HarperDB implements IHarperDB {
       records: response.data ?? [],
     }
   }
+
+  /**
+   * Searches for records with the provided attribute values
+   *
+   * @param {string} searchAttribute attribute you wish to search can be any attribute
+   * @param {string} searchValue  value you wish to search - wild cards are allowed.
+   * @param {SearchParams} params The parameters required to search records
+   * @return {Promise<OperationReturnType<SearchResponse>>} Returns array of found records
+   *
+   *
+   * @see documentation - https://docs.harperdb.io/#35367306-677c-40f3-bda0-172113a93a05
+   */
+  async searchByValue(searchAttribute: string, searchValue: unknown, params: SearchParams): Promise<OperationReturnType<SearchResponse>> {
+    const data = {
+      operation: Operations.SearchByValue,
+      get_attributes: ["*"],
+      ...toSnakeCaseKeys(params),
+      search_attribute: searchAttribute,
+      search_value: searchValue,
+    }
+
+    const response = await axios.post(this.url, data, { headers: this.headers })
+
+    return {
+      status: response.status,
+      records: response.data ?? [],
+    }
+  }
 }
