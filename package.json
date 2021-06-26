@@ -11,6 +11,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
+    "docs:gen": "typedoc",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -38,6 +39,7 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
     "ts-jest": "^27.0.3",
+    "typedoc": "^0.21.1",
     "typescript": "^4.3.4"
   },
   "dependencies": {
