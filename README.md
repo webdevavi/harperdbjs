@@ -23,6 +23,8 @@ A Javascript helper library written in Typescript to work with HarperDB easily.
 
 ## Usage 🛠
 
+> See complete [**documentation**](https://harperdbjs.webdevavi.com)
+
 ### Authentication 🛡
 
 First you need to initialize the HarperDB class with either your username & password or your token.
