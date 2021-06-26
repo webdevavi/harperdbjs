@@ -21,6 +21,67 @@ A Javascript helper library written in Typescript to work with HarperDB easily.
   yarn add harperdbjs
 ```
 
+## Why use HarperDBjs?
+
+Without using HarperDBjs, for working with HarperDB you will need to write the following code for every operation you wanna execute:
+
+```javascript
+// to insert a record using axios
+
+import axios from "axios"
+
+const url = "https://janedoe-test.harperdbcloud.com"
+const token = "djsjdksh..."
+
+const schema = "my-company"
+const table = "users"
+
+const user = {
+  name: "Jane Doe",
+  contact: 9999999999,
+  email: "jane@doe.com",
+}
+
+const data = {
+  operation: "insert",
+  schema,
+  table,
+  records: [user],
+}
+
+const headers = {
+  Authorization: `Basic ${token}`,
+}
+
+axios.post(url, data, { headers })
+```
+
+With HarperDBjs, you will do the same job but with lesser lines of code which will be a lot more readable and understandable and type safe.
+
+```javascript
+import { HarperDB } from "harperdbjs"
+
+const url = "https://janedoe-test.harperdbcloud.com"
+const token = "djsjdksh..."
+
+// you won't have to initialize the harperdb class again for each operation
+
+// initialize it once with the url and token or username/password
+// and use the same instance for every operation.
+const harperdb = new HarperDB({ url, token })
+
+const schema = "my-company"
+const table = "users"
+
+const user = {
+  name: "Jane Doe",
+  contact: 9999999999,
+  email: "jane@doe.com",
+}
+
+harperdb.insert(user, { schema, table })
+```
+
 ## Usage 🛠
 
 > See complete [**documentation**](https://harperdbjs.webdevavi.com)
