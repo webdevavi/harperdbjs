@@ -1,7 +1,6 @@
 import axios from "axios"
 import { Operations } from "../enums"
-import { CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, SearchByConditionParams, SearchCondition, SearchParams, SearchResponse, UpdateParams, UpsertParams } from "../types"
-import { AttributeParams } from "../types/attributeParams"
+import { AttributeParams, CreateTableParams, DeleteParams, DropTableParams, InsertParams, OperationReturnType, SearchByConditionParams, SearchCondition, SearchParams, SearchResponse, UpdateParams, UpsertParams } from "../types"
 import { stripUndefined, toSnakeCaseKeys } from "../utils"
 
 export interface HarperDBAuth {
